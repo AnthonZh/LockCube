@@ -9,6 +9,7 @@
 #define PIN_SW2 PB1
 
 #define ANALOG_MAX 4096
+#define DEBUG_LOGGING false
 
 enum class USBState {
   Connected,
@@ -20,21 +21,24 @@ USBState usb_state = USBState::Connected;
 HardwareSerial logging(PA10, PA9);
 
 void setup() {
+#if DEBUG_LOGGING
   logging.begin(115200);
   logging.println("app started!");
+#endif
 
   pinMode(PIN_SW1, INPUT_PULLUP);
   pinMode(PIN_SW2, INPUT_PULLUP);
   analogReadResolution(12);
 
   USB_Begin();
-  logging.println("USB setup complete");
 }
 
 void loop() {
   if (!USB_Running()) {
     if (usb_state == USBState::Connected) {
+#if DEBUG_LOGGING
       logging.println("USB Disconnected");
+#endif
       usb_state = USBState::Disconnected;
     }
 
@@ -44,7 +48,9 @@ void loop() {
 
   if (usb_state != USBState::Connected) {
     usb_state = USBState::Connected;
+#if DEBUG_LOGGING
     logging.println("USB Connected");
+#endif
 
     // we will manually send reports at end
     // otherwise each .setXXX call would send a new report.
@@ -68,9 +74,11 @@ void loop() {
   joystick.setButton(1, sw2_pressed);
   joystick.sendState();
 
+#if DEBUG_LOGGING
   // log for debugging
   logging.printf("%lu, %lu, %d, %d\r\n", y_axis, x_axis, sw1_pressed,
                  sw2_pressed);
+#endif
 
   delay(10);
 }
