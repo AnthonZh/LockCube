@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <HID.h>
 #include <Joystick.h>
+#include <stdlib.h>
 
 // Config
 #define PIN_VRX PA0
@@ -9,6 +10,7 @@
 #define PIN_SW2 PB1
 
 #define ANALOG_MAX 4096
+#define ADC_DEADZONE 32
 #define DEBUG_LOGGING false
 
 enum class USBState {
@@ -19,6 +21,9 @@ enum class USBState {
 Joystick_ joystick;
 USBState usb_state = USBState::Connected;
 HardwareSerial logging(PA10, PA9);
+
+// fwd declare
+void apply_deadzone(uint32_t &value);
 
 void setup() {
 #if DEBUG_LOGGING
@@ -67,6 +72,10 @@ void loop() {
   bool sw1_pressed = !digitalRead(PIN_SW1);
   bool sw2_pressed = !digitalRead(PIN_SW2);
 
+  // apply deadzone
+  apply_deadzone(y_axis);
+  apply_deadzone(x_axis);
+
   // update report
   joystick.setYAxis(y_axis);
   joystick.setXAxis(x_axis);
@@ -81,4 +90,11 @@ void loop() {
 #endif
 
   delay(10);
+}
+
+void apply_deadzone(uint32_t &value) {
+  int midpoint = ANALOG_MAX / 2;
+  if (abs((int)value - midpoint) < ADC_DEADZONE) {
+    value = midpoint;
+  }
 }
