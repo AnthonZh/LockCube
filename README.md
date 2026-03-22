@@ -21,7 +21,7 @@ This GitHub repository is designed to organize the different components which go
 - Assorted cabling and wires
 - Galaxy S25 Ultra (for display)
 
-Using the [assembly files](./LockCubeAssembly/), 3D print the camera & gamecube. The STM32F411 BlackPill should have the program from [stm32-joystick](./stm32-joystick/) uploaded. The program in the submodule [LockCubeMiniGame](./LockCubeMiniGame/) has detailed instructions on how to install, and then this should be built to Linux using Unity. The resulting build should be transferred to the Raspberry Pi. The Pi requires `box64` installed to run the Unity build, as well as the [backend](./backend/) running.
+Using the [assembly files](./LockCubeAssembly/), 3D print the camera & gamecube. The STM32F411 BlackPill should have the program from [stm32-joystick](./stm32-joystick/) uploaded. The program in the submodule [LockCubeMiniGame](./LockCubeMiniGame/) has detailed instructions on how to install, and then this should be built to Linux using Unity. The resulting build should be transferred to the Raspberry Pi. The Pi requires `box64` installed to run the Unity build, as well as the [backend](./backend/) and [yolo model](./yolo-test/) running.
 
 ## AI Acknowledgement
 Large language models like Claude, ChatGPT, Google Gemini, and OpenAI Codex were used to assist in writing some of the code. The [game](./LockCubeMiniGame/) contains additional information on how AI was used in that repository.

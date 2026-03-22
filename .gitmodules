@@ -4,3 +4,6 @@
 [submodule "LockCubeMiniGame"]
 	path = LockCubeMiniGame
 	url = git@github.com:AnthonZh/LockCubeMiniGame.git
+[submodule "yolo-test"]
+	path = yolo-test
+	url = git@github.com:andrewchen3019/yolo-test.git
