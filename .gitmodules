@@ -1,3 +1,6 @@
 [submodule "backend"]
 	path = backend
 	url = https://github.com/pranavbijith1/LockCubeBackend
+[submodule "LockCubeMiniGame"]
+	path = LockCubeMiniGame
+	url = git@github.com:AnthonZh/LockCubeMiniGame.git
