@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <HID.h>
-#include <Joystick.h>
+#include <Keyboard.h>
 #include <stdlib.h>
 
 // Config
@@ -18,7 +18,6 @@ enum class USBState {
   Disconnected,
 };
 
-Joystick_ joystick;
 USBState usb_state = USBState::Connected;
 HardwareSerial logging(PA10, PA9);
 
@@ -59,9 +58,7 @@ void loop() {
 
     // we will manually send reports at end
     // otherwise each .setXXX call would send a new report.
-    joystick.begin(false);
-    joystick.setYAxisRange(0, ANALOG_MAX);
-    joystick.setXAxisRange(0, ANALOG_MAX);
+    Keyboard.begin();
   }
 
   // Poll sensors
@@ -77,11 +74,25 @@ void loop() {
   apply_deadzone(x_axis);
 
   // update report
-  joystick.setYAxis(y_axis);
-  joystick.setXAxis(x_axis);
-  joystick.setButton(0, sw1_pressed);
-  joystick.setButton(1, sw2_pressed);
-  joystick.sendState();
+  if(x_axis > ANALOG_MAX / 2) {
+    Keyboard.press('d');
+    Keyboard.release('a');
+  }
+  else if(x_axis < ANALOG_MAX / 2) {
+    Keyboard.release('d');
+    Keyboard.press('a');
+  }
+  else {
+    Keyboard.release('d');
+    Keyboard.release('a');
+  }
+
+  if(sw2_pressed) {
+    Keyboard.press(' ');
+  }
+  else {
+    Keyboard.release(' ');
+  }
 
 #if DEBUG_LOGGING
   // log for debugging
